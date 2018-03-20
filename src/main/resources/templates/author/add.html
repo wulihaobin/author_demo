@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/one">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div layout:fragment="content">
+    <form th:action="@{/author/add_author}" method="post" th:object="${author}">
+        <div class="form-group">
+            <label for="name">作者名称</label>
+            <input class="form-control" id="name" th:field="*{name}" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="form-group">
+            <label for="tel">电话号码</label>
+            <input type="number" class="form-control" id="tel" th:field="*{tel}" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">保存作者</button>
+    </form>
+</div>
+
+</html>
+

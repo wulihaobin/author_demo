@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        $(function(){
+            var data=[];
+            $.ajax({
+                type:"post",
+                async:true,
+                url:'/echarts/data',
+                data:{},
+                success:function (result) {
+                    if(result)
+                    {
+                        data.push(result.shirt);
+                        data.push(result.sweater);
+                        data.push(result.chiffonShirt);
+                        data.push(result.pants);
+                        data.push(result.shoes);
+                        data.push(result.socks);
+
+                        myChart.hideLoading();
+                        myChart.setOption({
+                            series:[{
+                                data:data
+                            }]
+                        });
+                    }
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+<div id="container" style="height: 400px;width: 600px" th:attr="data-list=${list}"></div>
+<div id="text"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('container'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+            data:['销量']
+        },
+        xAxis: {
+            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+        },
+        yAxis: {},
+        series: [{
+            name: '销量',
+            type: 'bar',
+            data : []
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

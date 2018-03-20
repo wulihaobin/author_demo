@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/two" >
+<head>
+    <title>文章列表</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../js/jquery-1.7.2.js"></script>
+    <script>
+        $(document).ready(function(){
+            var data=$("#hidden").data("active");
+            $(".paging").eq(data).addClass("active");
+        });
+    </script>
+</head>
+
+<div layout:fragment="content">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>书名</th>
+            <th>作者</th>
+            <th>价格</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(books)}">
+            <td colspan="5">书籍为空哦，请添加新的书籍 <a href="#">添加</a></td>
+        </tr>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">id</td>
+            <td>《[[${book.name}]]》</td>
+            <td th:text="${book.author.name}">author</td>
+            <td th:text="${book.price}">price</td>
+            <td>
+                <a th:href="@{/book/edit(id=${book.id})}" href="#">编辑</a>
+                <a onclick="if(!window.confirm('是否要删除？')) event.preventDefault();"
+                   th:href="@{/book/delete(id=${book.id})}" href="#">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="hidden" id="hidden" th:attr="data-active=${active}">
+    <ul class="pagination">
+        <li class="up"><a href="/book/up">&laquo;</a></li>
+        <li class="paging" th:each="page : ${pages}"><a th:href="@{/book/paging(page=${page})}" th:text="${page}"></a></li>
+        <li class="down"><a href="/book/down">&raquo;</a></li>
+    </ul>
+    <br/>
+    <a href="#" class="btn btn-dark" th:href="@{/book/add}">添加新的书籍</a>
+</div>
+
+<script layout:fragment="script">
+    $(".nav-book").addClass("active");
+</script>

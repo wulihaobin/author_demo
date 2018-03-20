@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/two" >
+<head>
+    <title>作者列表</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            var id;
+            var data;
+            var path;
+            $(".date-server").click(function(){
+                id=$(this).data("id");
+                data=$(this).data("action");
+                $("#mbody").text("是否要"+data+"?");
+                if(data=='删除'){
+                    path='delete';
+                }else{
+                    path='edit';
+                }
+            });
+            $("#true").click(function () {
+                window.location.href='/author/'+path+'?id='+id;
+            })
+        });
+    </script>
+</head>
+
+<div layout:fragment="content">
+    <input type="hidden" id="id">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>姓名</th>
+            <th>电话号码</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(authors)}">
+            <td colspan="5">目前没有签约任何作者哦 <a href="#">添加</a></td>
+        </tr>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.id}">id</td>
+            <td>[[${author.name}]]</td>
+            <td th:text="${author.tel}">price</td>
+            <td>
+                <a class="date-server" th:attr="data-id=${author.id}" data-toggle="modal" data-target="#exampleModalCenter" href="#" data-action="编辑">编辑</a>
+                <a class="date-server" th:attr="data-id=${author.id}" data-toggle="modal" data-target="#exampleModalCenter" href="#" data-action="删除">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="#" class="btn btn-dark" th:href="@{/author/add_author}">签约新的作者</a>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">提示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mbody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                    <button type="button" class="btn btn-primary" id="true">是</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script layout:fragment="script">
+    $(".nav-author").addClass("active");
+</script>
